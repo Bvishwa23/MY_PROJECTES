@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bus Pass QR Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(to right, #c9d6ff, #e2e2e2);
+      margin: 0;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #reader {
+      width: 320px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border-radius: 12px;
+      background-color: #fff;
+      padding: 10px;
+    }
+
+    #details {
+      background: #ffffff;
+      padding: 25px;
+      margin-top: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    #details h3 {
+      margin-bottom: 20px;
+      color: #4CAF50;
+    }
+
+    #details p {
+      margin: 10px 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #details p strong {
+      color: #555;
+    }
+
+    .valid {
+      color: #28a745;
+    }
+
+    .invalid {
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Scan Student Bus Pass QR Code</h2>
+<div id="reader"></div>
+<div id="details"></div>
+
+<script>
+  function parseTextData(text) {
+    const lines = text.trim().split("\n");
+    const data = {};
+
+    lines.forEach(line => {
+      const [key, ...valueParts] = line.split(":");
+      if (key && valueParts.length > 0) {
+        const cleanKey = key.trim().toLowerCase().replace(/\s+/g, '');
+        const cleanValue = valueParts.join(":").trim();
+        data[cleanKey] = cleanValue;
+      }
+    });
+
+    return {
+      name: data.name || "N/A",
+      email: data.email || "N/A",
+      college: data.college || "N/A",
+      id: data.id || "N/A",
+      pass: data.pass || "N/A",
+      route: data.route || "N/A",
+      validTill: data.validtill || "N/A"
+    };
+  }
+
+  function showDetails(data, valid) {
+    document.getElementById('details').innerHTML = `
+      <h3 class="${valid ? 'valid' : 'invalid'}">
+        ${valid ? '✅ Valid Pass' : '❌ Invalid Pass'}
+      </h3>
+      <p><strong>Name:</strong> ${data.name}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>College:</strong> ${data.college}</p>
+      <p><strong>ID:</strong> ${data.id}</p>
+      <p><strong>Pass:</strong> ${data.pass}</p>
+      <p><strong>Route:</strong> ${data.route}</p>
+      <p><strong>Valid Till:</strong> ${data.validTill}</p>
+    `;
+  }
+
+  function onScanSuccess(decodedText) {
+    console.log("Scanned text:", decodedText);
+
+    const studentData = parseTextData(decodedText);
+    const isValid = studentData.name !== "N/A" && studentData.validTill !== "N/A";
+
+    showDetails(studentData, isValid);
+
+    fetch("http://localhost:5000/api/student", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(studentData)
+    })
+    .then(res => res.json())
+    .then(response => {
+      console.log("Saved to database:", response);
+    })
+    .catch(err => {
+      console.error("Error saving data:", err);
+    });
+  }
+
+  const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+  html5QrcodeScanner.render(onScanSuccess);
+</script>
+</body>
+</html>
