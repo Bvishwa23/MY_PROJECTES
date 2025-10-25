@@ -1,0 +1,2 @@
+Developed “Gesture-Driven AI Document Assistant” — a Python desktop app that uses webcam-based hand gestures and voice commands to annotate and chat with documents.
+Integrated MediaPipe hand tracking, CustomTkinter UI, OpenAI conversational AI, and Vosk voice input to enable intuitive navigation, highlighting, and document-based Q&A.
