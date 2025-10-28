@@ -1,0 +1,32 @@
+Gesture-Driven AI Document Assistant
+📄 Overview
+
+The Gesture-Driven AI Document Assistant is an intelligent Python desktop application that enables users to interact with documents through hand gestures and voice commands. It combines computer vision, voice recognition, and conversational AI to create a smooth, hands-free experience for document annotation, navigation, and question-answering.
+
+🧠 Key Features
+
+✋ Gesture Control: Uses MediaPipe for real-time hand tracking to scroll, highlight, and select text via webcam.
+
+🎤 Voice Commands: Employs Vosk for offline speech recognition to open files, navigate pages, and issue commands.
+
+💬 AI Chat with Documents: Integrates OpenAI’s conversational AI for intelligent document-based Q&A, summaries, and explanations.
+
+🪟 Modern UI: Built with CustomTkinter for a clean, intuitive, and responsive interface.
+
+🔍 Annotation Tools: Enables highlighting and commenting directly using gestures or speech.
+
+🧩 Multimodal Interaction: Combines vision, language, and speech inputs for a seamless user experience.
+
+♿ Accessibility: Provides a touch-free way to handle documents — ideal for educators, researchers, and differently-abled users.
+
+🛠️ Tech Stack
+
+Language: Python
+
+Libraries/Frameworks: MediaPipe, CustomTkinter, OpenAI API, Vosk, OpenCV
+
+Concepts Used: Computer Vision, NLP, Voice Recognition, Human-Computer Interaction (HCI)
+
+📈 Outcome
+
+This project showcases how AI and multimodal interfaces can transform everyday document handling. It demonstrates an innovative approach to gesture-driven and voice-assisted document management, enhancing accessibility, engagement, and productivity.
